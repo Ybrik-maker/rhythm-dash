@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rhythm Dash</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Russo+One&family=Sora:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div id="edgeAds">
+      <aside class="ad-edge top" data-ad="top"><div class="ad-unit"></div></aside>
+      <aside class="ad-edge bottom" data-ad="bottom"><div class="ad-unit"></div></aside>
+    </div>
+    <canvas id="view"></canvas>
+    <audio id="music" preload="auto"></audio>
+    <button id="pauseBtn" class="hidden" type="button" aria-label="Pause">
+      <span></span><span></span>
+    </button>
+
+    <section id="auth" class="screen">
+      <div class="panel">
+        <div class="logo-row">
+          <span class="cube" aria-hidden="true"></span>
+          <h1>RHYTHM DASH</h1>
+        </div>
+        <p id="authKicker" class="kicker">SIGN IN</p>
+        <h2 id="authTitle">Welcome back</h2>
+        <form id="accountForm" class="auth-fields">
+          <label>Name
+            <input id="accountName" maxlength="16" autocomplete="username" required />
+          </label>
+          <label>Password
+            <input id="accountPass" type="password" maxlength="64" autocomplete="current-password" required />
+          </label>
+          <button id="accountSubmit" class="btn" type="submit"><span>Sign in</span></button>
+        </form>
+        <button id="authSwitch" class="btn ghost" type="button"><span>I need an account</span></button>
+        <button id="guestPlay" class="text-link" type="button">Play as guest</button>
+        <p class="note">An account keeps your scores and skins on the server. The same name and password work on the web and on another device. The music stays where you uploaded it.</p>
+      </div>
+    </section>
+
+    <section id="menu" class="screen hidden">
+      <div class="panel hub">
+        <div class="logo-row">
+          <span class="cube" aria-hidden="true"></span>
+          <h1>RHYTHM DASH</h1>
+        </div>
+        <p id="hubWho" class="lead"></p>
+        <div class="hub-actions">
+          <button id="goPlay" class="icon-btn" type="button">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><polygon points="16,8 40,24 16,40" fill="currentColor"/></svg>
+            <span>Play</span>
+          </button>
+          <button id="goSkins" class="icon-btn" type="button">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="10" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3"/><polygon points="18,18 32,24 18,30" fill="currentColor"/></svg>
+            <span>Skins</span>
+          </button>
+          <button id="goScores" class="icon-btn" type="button">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><polygon points="24,5 29,18 43,19 32,28 35,42 24,34 13,42 16,28 5,19 19,18" fill="currentColor"/></svg>
+            <span>Scores</span>
+          </button>
+          <button id="goAccount" class="icon-btn" type="button">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="16" r="8" fill="currentColor"/><path d="M8 42c2-9 8-14 16-14s14 5 16 14" fill="currentColor"/></svg>
+            <span>Account</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="playhub" class="screen hidden">
+      <div class="panel">
+        <p class="kicker">PLAY</p>
+        <h2>New level</h2>
+        <p class="lead">Drop a song here, or tap the box and pick one. The game builds a level from it.</p>
+        <div id="dropzone" class="dropzone" role="button" tabindex="0">
+          <span class="drop-title">Drop a file here</span>
+          <span class="drop-sub">or tap and choose one</span>
+          <span class="drop-types">mp3, wav, ogg, m4a, flac</span>
+          <input id="file" type="file" accept="audio/*,.mp3,.wav,.wave,.ogg,.oga,.opus,.m4a,.aac,.flac,.webm,.mp4,.aif,.aiff" />
+        </div>
+        <div class="actions">
+          <button id="demo" class="btn ghost" type="button"><span>Demo beat</span></button>
+        </div>
+        <div id="savedWrap" class="saved-wrap">
+          <p class="kicker">SAVED LEVELS</p>
+          <ul id="saved"></ul>
+        </div>
+        <p class="note">The level takes the name of the file. Tempo, hits, and structure come from the audio.</p>
+        <div class="actions">
+          <button id="backHub" class="btn ghost" type="button"><span>Menu</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="skins" class="screen hidden">
+      <div class="panel">
+        <p class="kicker">SKINS</p>
+        <h2>Your cube</h2>
+        <p id="skinProgress" class="note"></p>
+        <div id="skinRow" class="skin-row"></div>
+        <div class="actions">
+          <button id="backSkins" class="btn ghost" type="button"><span>Menu</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="scores" class="screen hidden">
+      <div class="panel">
+        <p class="kicker">SCORES</p>
+        <h2>Account</h2>
+        <ul id="cloudScores"></ul>
+        <p class="note">Numbers live on the server. The music stays on the device where the level was made.</p>
+        <div class="actions">
+          <button id="backScores" class="btn ghost" type="button"><span>Menu</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="account" class="screen hidden">
+      <div class="panel">
+        <p class="kicker">ACCOUNT</p>
+        <h2 id="accountHello">Player</h2>
+        <p id="accountCopy" class="lead"></p>
+        <label id="guestNameWrap" class="player-name">Name on this device
+          <input id="playerName" maxlength="16" autocomplete="off" />
+        </label>
+        <form id="promoForm" class="auth-fields">
+          <label>Promo code
+            <input id="promoCode" maxlength="24" autocomplete="off" spellcheck="false" />
+          </label>
+          <button class="btn" type="submit"><span>Apply</span></button>
+        </form>
+        <p id="promoState" class="note"></p>
+        <button id="promoOff" class="btn ghost hidden" type="button"><span>Turn ads back on</span></button>
+        <div class="actions">
+          <button id="accountLogout" class="btn" type="button"><span>Sign out</span></button>
+          <button id="accountEnter" class="btn" type="button"><span>Sign in</span></button>
+          <button id="backAccount" class="btn ghost" type="button"><span>Menu</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="loading" class="screen hidden">
+      <div class="panel">
+        <p class="kicker">LISTENING</p>
+        <h2>Reading the song</h2>
+        <div class="bar"><div id="barFill"></div></div>
+        <p id="loadMsg" class="lead"></p>
+        <ul id="loadLog"></ul>
+      </div>
+    </section>
+
+    <section id="brief" class="screen hidden">
+      <div class="panel">
+        <p class="kicker">LEVEL READY</p>
+        <h2 id="levelTitle">Breakthrough</h2>
+        <div class="stats">
+          <div><span>Attempts to complete</span><strong id="statAttempts">—</strong></div>
+          <div><span>Immortal mode</span><strong id="statImmortal">—</strong></div>
+        </div>
+        <canvas id="wave"></canvas>
+        <div id="timeline"></div>
+        <div class="section-tools">
+          <p class="note">Paint a section on the wave, such as the drop. On its own the game only marks the loudest part of the song, and it ends when the wave breaks. Painting shows it what you want.</p>
+          <div class="brush-row" id="brushes">
+            <button type="button" data-brush="drop" class="brush on">Drop</button>
+            <button type="button" data-brush="rise" class="brush">Build</button>
+            <button type="button" data-brush="break" class="brush">Break</button>
+            <button type="button" data-brush="intro" class="brush">Intro</button>
+            <button type="button" data-brush="outro" class="brush">Outro</button>
+            <button id="rebuild" class="btn" type="button"><span>Rebuild</span></button>
+          </div>
+        </div>
+        <label class="immortal">
+          <input id="immortal" type="checkbox" />
+          <span>Immortal mode</span>
+        </label>
+        <p id="record" class="note"></p>
+        <div class="actions">
+          <button id="play" class="btn" type="button"><span>Play</span></button>
+          <button id="saveLevel" class="btn ghost" type="button"><span>Save level</span></button>
+          <button id="back" class="btn ghost" type="button"><span>Other song</span></button>
+        </div>
+        <p class="note">Hold the mouse, space, or arrow. A yellow orb is a jump in the air, pink is higher, a pink pad launches you. On the drop you fly through a portal and the cube becomes a ship: hold to rise, release to fall, both at the same speed.</p>
+      </div>
+    </section>
+
+    <section id="pause" class="screen hidden">
+      <div class="panel">
+        <p class="kicker">PAUSED</p>
+        <h2>You are stopped</h2>
+        <div class="end-actions">
+          <button id="resume" class="btn" type="button"><span>Resume</span></button>
+          <button id="restartPause" class="btn ghost" type="button"><span>From the start</span></button>
+          <button id="menuPause" class="btn ghost" type="button"><span>Menu</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="win" class="screen hidden">
+      <div class="panel">
+        <p class="kicker">CLEAR</p>
+        <h2 id="winTitle">Done</h2>
+        <p id="winCopy" class="lead">Level cleared.</p>
+        <div class="end-actions">
+          <button id="again" class="btn" type="button"><span>Play again</span></button>
+          <button id="menuWin" class="btn ghost" type="button"><span>Menu</span></button>
+        </div>
+      </div>
+    </section>
+
+    <div id="dropveil">
+      <div>
+        <strong>Drop the file</strong>
+        <p>I'll read it and build a level.</p>
+      </div>
+    </div>
+    <section id="turn" class="screen hidden">
+      <div class="panel">
+        <p class="kicker">LANDSCAPE</p>
+        <h2>Turn your phone</h2>
+        <p class="lead">Rhythm Dash runs in landscape.</p>
+      </div>
+    </section>
+    <div id="toast" role="status"></div>
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

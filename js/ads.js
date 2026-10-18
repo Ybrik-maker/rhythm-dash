@@ -1,5 +1,5 @@
 export const AD_CONFIG = {
-  client: "",
+  client: "ca-pub-7626180613649732",
   slots: {
     top: "",
     bottom: "",

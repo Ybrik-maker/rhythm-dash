@@ -1,8 +1,8 @@
 export const AD_CONFIG = {
   client: "ca-pub-7626180613649732",
   slots: {
-    top: "",
-    bottom: "",
+    top: "7972551791",
+    bottom: "8089855880",
   },
 }
 
@@ -45,7 +45,7 @@ export function refreshAds() {
     ins.style.height = "100%"
     ins.dataset.adClient = AD_CONFIG.client
     ins.dataset.adSlot = AD_CONFIG.slots[name]
-    ins.dataset.adFormat = "horizontal"
+    ins.dataset.adFormat = "auto"
     ins.dataset.fullWidthResponsive = "true"
     host.replaceChildren(ins)
     filled.add(name)
